@@ -14,7 +14,7 @@
 }
 
 #menu {
-	background-color: #253A46;
+	background-color: #253a46;
 	padding: 20px;
 	font-size: 20px;
 }
@@ -26,4 +26,16 @@
 
 body {
 	margin: 0;
+}
+
+.center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 60vh;
+}
+
+.rojo {
+	color: red;
 }
