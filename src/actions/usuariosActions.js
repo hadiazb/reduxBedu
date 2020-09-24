@@ -18,10 +18,9 @@ export const traerTodos = () => async (dispatch) => {
 			payload: response.data,
 		});
 	} catch (error) {
-		// console.log('Error en la petición', error.message);
 		dispatch({
 			type: ERROR,
-			payload: error.message,
+			payload: `Algo salio de la chingada, tu puedes intentar al rato, error: ${error.message}`,
 		});
 	}
 };
