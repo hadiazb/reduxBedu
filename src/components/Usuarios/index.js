@@ -7,7 +7,9 @@ import { connect } from 'react-redux';
 import * as usuariosActions from '../../actions/usuariosActions';
 class Usuarios extends Component {
 	componentDidMount() {
-		this.props.traerTodos();
+		if (!this.props.usuarios.lenght) {
+			this.props.traerTodos();
+		}
 	}
 
 	ponerContenido = () => {
@@ -24,7 +26,9 @@ class Usuarios extends Component {
 	render() {
 		return (
 			<div className='container-fluid pt-3 pb-2'>
-				<h2 className='pt-1 pb-2 d-flex justify-content-center align-items-center'>Usuarios</h2>
+				<h2 className='pt-1 pb-2 d-flex justify-content-center align-items-center'>
+					Usuarios
+				</h2>
 				{this.ponerContenido()}
 			</div>
 		);

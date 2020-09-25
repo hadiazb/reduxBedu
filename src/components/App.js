@@ -7,6 +7,7 @@ import {
 import Layout from './Layout/index';
 import Usuarios from './Usuarios/index';
 import Tareas from './Tareas/index';
+import Publicaciones from './Publicaciones/index';
 
 const App = () => {
 	return (
@@ -15,6 +16,11 @@ const App = () => {
 				<Layout>
 					<Switch>
 						<Route exact component={Usuarios} path='/usuarios' />
+						<Route
+							exact
+							component={Publicaciones}
+							path='/publicaciones/:key'
+						/>
 						<Route exact component={Tareas} path='/tareas' />
 					</Switch>
 				</Layout>
