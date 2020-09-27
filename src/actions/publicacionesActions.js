@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
-	CARGANDO,
-	ERROR,
+	// CARGANDO,
+	// ERROR,
 	TRAER_POR_USUARIO,
 } from '../types/publicacionesTypes';
 import * as usuariosTypes from '../types/usuariosTypes';

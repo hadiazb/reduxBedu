@@ -23,6 +23,7 @@ class Publicaciones extends Component {
 		if (!this.props.usuariosReducer.usuarios.length) {
 			await usuariosTraerTodos();
 		}
+
 		if (this.props.usuariosReducer.error) {
 			return;
 		}
@@ -46,7 +47,7 @@ class Publicaciones extends Component {
 		} = this.props;
 
 		if (usuariosReducer.error) {
-			return <h1>No encontrada</h1>;
+			return <h1>{usuariosReducer.error}</h1>;
 		}
 		if (
 			!usuariosReducer.usuarios.length ||
@@ -57,15 +58,70 @@ class Publicaciones extends Component {
 
 		const nombre = usuariosReducer.usuarios[key].name;
 
-		return <h1>Publicaciones de {nombre}</h1>;
+		return (
+			<h2 className=' card-header'>Publicaciones de {nombre}</h2>
+		);
+	};
+
+	ponerPublicaciones = () => {
+		const {
+			usuariosReducer: { usuarios },
+			usuariosReducer,
+			publicacionesReducer,
+			publicacionesReducer: { publicaciones },
+			match: {
+				params: { key },
+			},
+		} = this.props;
+
+		if (!usuarios.length) {
+			return;
+		}
+
+		if (usuariosReducer.error) {
+			return;
+		}
+
+		if (publicacionesReducer.cargando) {
+			return <Spinner />;
+		}
+
+		if (publicacionesReducer.error) {
+			return (
+				<h5 className='card-title'>
+					{publicacionesReducer.error}
+				</h5>
+			);
+		}
+
+		if (!publicaciones.length) {
+			return;
+		}
+
+		if (!('publicaciones_key' in usuarios[key])) {
+			return;
+		}
+
+		const { publicaciones_key } = usuarios[key];
+
+		return publicaciones[publicaciones_key].map(
+			(publicacion) => (
+				<div className='card-body' key={publicacion.id}>
+					<h3 className='card-title'>{publicacion.title}</h3>
+					<p className='card-text'>{publicacion.body}</p>
+				</div>
+			)
+		);
 	};
 
 	render() {
 		console.log(this.props);
 		return (
 			<div className='container-fluid pt-3 pb-2'>
-				{this.ponerUsuario()}
-				{this.props.match.params.key}
+				<div className='card'>
+					{this.ponerUsuario()}
+					{this.ponerPublicaciones()}
+				</div>
 			</div>
 		);
 	}
