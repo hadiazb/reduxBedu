@@ -20,7 +20,7 @@ export const traerTodos = () => async (dispatch) => {
 	} catch (error) {
 		dispatch({
 			type: ERROR,
-			payload: `Algo salio de la chingada, tu puedes intentar al rato, error: ${error.message}`,
+			payload: `Informacion de usuario no disponible, error: ${error.message}`,
 		});
 	}
 };

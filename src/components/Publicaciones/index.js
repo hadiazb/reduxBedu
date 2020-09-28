@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/index';
+import NotFound from '../NotFound/index';
+import Comentarios from './Comentarios';
 
 import * as usuariosActions from '../../actions/usuariosActions';
 import * as publicacionesActions from '../../actions/publicacionesActions';
@@ -8,6 +10,8 @@ import * as publicacionesActions from '../../actions/publicacionesActions';
 const { traerTodos: usuariosTraerTodos } = usuariosActions;
 const {
 	traerPorUsuario: publicacionesTraerPorUsuario,
+	abrirCerrar,
+	traerComentarios,
 } = publicacionesActions;
 
 class Publicaciones extends Component {
@@ -47,7 +51,7 @@ class Publicaciones extends Component {
 		} = this.props;
 
 		if (usuariosReducer.error) {
-			return <h1>{usuariosReducer.error}</h1>;
+			return <NotFound mensaje={usuariosReducer.error} />;
 		}
 		if (
 			!usuariosReducer.usuarios.length ||
@@ -59,7 +63,9 @@ class Publicaciones extends Component {
 		const nombre = usuariosReducer.usuarios[key].name;
 
 		return (
-			<h2 className=' card-header'>Publicaciones de {nombre}</h2>
+			<h2 className=' card-header'>
+				Publicaciones de {nombre}
+			</h2>
 		);
 	};
 
@@ -88,9 +94,11 @@ class Publicaciones extends Component {
 
 		if (publicacionesReducer.error) {
 			return (
-				<h5 className='card-title'>
-					{publicacionesReducer.error}
-				</h5>
+				<div className='card-body'>
+					<p className='card-text'>
+						{publicacionesReducer.error}
+					</p>
+				</div>
 			);
 		}
 
@@ -104,14 +112,38 @@ class Publicaciones extends Component {
 
 		const { publicaciones_key } = usuarios[key];
 
-		return publicaciones[publicaciones_key].map(
-			(publicacion) => (
-				<div className='card-body' key={publicacion.id}>
-					<h3 className='card-title'>{publicacion.title}</h3>
-					<p className='card-text'>{publicacion.body}</p>
-				</div>
-			)
+		return this.mostrarInfo(
+			publicaciones[publicaciones_key],
+			publicaciones_key
 		);
+	};
+
+	mostrarInfo = (publicaciones, pub_key) =>
+		publicaciones.map((publicacion, com_key) => (
+			<div
+				className='card-body'
+				key={publicacion.id}
+				onClick={() =>
+					this.mostrarComentarios(
+						pub_key,
+						com_key,
+						publicacion.comentarios
+					)
+				}
+				role='button'
+			>
+				<h3 className='card-title'>{publicacion.title}</h3>
+				<p className='card-text'>{publicacion.body}</p>
+				<span>
+					{publicacion.abierto ? <Comentarios /> : ''}
+				</span>
+			</div>
+		));
+
+	mostrarComentarios = (pub_key, com_key, comentarios) => {
+		console.log('Comentarios', comentarios);
+		this.props.abrirCerrar(pub_key, com_key);
+		this.props.traerComentarios(pub_key, com_key);
 	};
 
 	render() {
@@ -137,6 +169,8 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
 	usuariosTraerTodos,
 	publicacionesTraerPorUsuario,
+	abrirCerrar,
+	traerComentarios,
 };
 
 export default connect(
